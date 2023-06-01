@@ -33,8 +33,3 @@ ADD_USER_KEY="YOUR_ADD_USER_KEY"
 ## API
 
 1. /addUser
-
-nazwy plikow
-nazwy klas w tych plikach
-ustawienie wartości z .env żeby działały
-w backend/routes/addicpuser.js dodac wartosci z .env - spreadsheet oraz u góry klucz add_user_key
