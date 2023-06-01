@@ -1,0 +1,102 @@
+.loginbackground {
+    min-height: 692px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 0;
+    overflow: hidden;
+
+    .flex-flex {
+        display: flex;
+    }
+
+    .box-root {
+        box-sizing: border-box;
+    }
+
+    .loginbackground-gridContainer {
+        display: -ms-grid;
+        display: grid;
+        -ms-grid-columns: [start] 1fr [left-gutter] (86.6px) [left-gutter] 1fr [end];
+        grid-template-columns: [start] 1fr [left-gutter] repeat(16, 86.6px) [left-gutter] 1fr [end];
+        -ms-grid-rows: [top] 1fr [top-gutter] (64px) [bottom-gutter] 1fr [bottom];
+        grid-template-rows: [top] 1fr [top-gutter] repeat(8, 64px) [bottom-gutter] 1fr [bottom];
+        justify-content: center;
+        margin: 0 -2%;
+        transform: rotate(-12deg) skew(-12deg);
+    }
+
+    .box-divider--light-all-2 {
+        box-shadow: inset 0 0 0 2px #e3e8ee;
+    }
+
+    .box-background--blue {
+        background: linear-gradient(90deg, #2828ae, #11167e);
+    }
+
+    .box-background--white {
+        background-color: #ffffff;
+    }
+
+    .box-background--blue800 {
+        background: linear-gradient(90deg, #2828ae, #11167e);
+    }
+
+    .box-background--gray100 {
+        background-color: #e3e8ee;
+    }
+
+    .box-background--cyan200 {
+        background-color: #2827ae;
+    }
+
+    .animationRightLeft {
+        animation: animationRightLeft 13s ease-in-out infinite;
+        animation-delay: 1s;
+    }
+
+    .animationLeftRight {
+        animation: animationLeftRight 14s ease-in-out infinite;
+        animation-delay: 3s;
+    }
+
+    .tans3s {
+        animation: animationLeftRight 15s ease-in-out infinite;
+        animation-delay: 5s;
+    }
+
+    .tans4s {
+        animation: animationLeftRight 16s ease-in-out infinite;
+        animation-delay: 7s;
+    }
+
+    @keyframes animationLeftRight {
+        0% {
+            transform: translateX(0px);
+        }
+
+        50% {
+            transform: translateX(1000px);
+        }
+
+        100% {
+            transform: translateX(0px);
+        }
+    }
+
+    @keyframes animationRightLeft {
+        0% {
+            transform: translateX(0px);
+        }
+
+        50% {
+            transform: translateX(-1000px);
+        }
+
+        100% {
+            transform: translateX(0px);
+        }
+    }
+}

@@ -1,0 +1,28 @@
+.footer-link {
+
+    .listing {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    span {
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .listing a {
+        color: #697386;
+        font-weight: 600;
+        margin: 0 10px;
+    }
+}
+
+
+// <div className="footer-link ">
+// <div className="listing ">
+//     <span><a href="#">© Stackfindover</a></span>
+//     <span><a href="#">Contact</a></span>
+//     <span><a href="#">Privacy & terms</a></span>
+// </div>
+// </div>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a user - Temporary form</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <style>
+        form {
+            display: block;
+            margin: 0 auto;
+            width: 50%;
+            text-align: center;
+        }
+
+        .form-field {
+            display: block;
+            padding: 25px;
+            -webkit-box-shadow: 8px 8px 24px -17px rgba(66, 68, 90, 1);
+            -moz-box-shadow: 8px 8px 24px -17px rgba(66, 68, 90, 1);
+            box-shadow: 8px 8px 24px -17px rgba(66, 68, 90, 1);
+        }
+
+        #link {
+            margin-top: 40px;
+            font-weight: bold;
+        }
+
+        .form-field>label {
+            display: block;
+        }
+
+        .form-field>input {
+            width: 50%;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="" method="post" id="add-user-form">
+        <div class="form-field">
+            <label for="key">Enter the authorization key to create a user</label>
+            <input required type="password" name="key" id="" placeholder="authorization key">
+        </div>
+        <div class="form-field">
+            <label for="user-name">Enter the username</label>
+            <input required type="text" name="userName" id="user-name" placeholder="username" maxlength="30">
+        </div>
+        <div class="form-field">
+            <label for="user-password">This is a random generated user password - don't change it unless you want it to
+                be specific <b style="color:red">DO NOT USE SPECIAL CHARACTERS, ONLY USE :
+                    0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</b></label>
+            <input required type="text" name="userPassword" id="user-password" placeholder="user password">
+        </div>
+        <div class="form-field">
+            <label for="link">Copy the link right before creating the user and send it to the user for instant login
+                :</label>
+            <div id="link">
+            </div>
+        </div>
+        <div class="form-field">
+            <input id="add-user" type="submit" value="Create a user!" class="hidden">
+            <button id="before-add-user">CREATE A USER</button>
+        </div>
+    </form>
+</body>
+<script>
+    $(document).ready(function () {
+        const chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const passwordLength = 25;
+        let password = "";
+        let username = ""
+        let port = ""
+
+        if (window.location.hostname == "localhost") {
+            port = ":3000"
+        }
+
+        var form = $("#add-user-form");
+        form.attr("action", "http://" + window.location.hostname + port + '/addUser')
+
+        for (var i = 0; i <= passwordLength; i++) {
+            var randomNumber = Math.floor(Math.random() * chars.length);
+            password += chars.substring(randomNumber, randomNumber + 1);
+        }
+
+        $("#user-password").val(password)
+        username = $("#user-name").val()
+        $("#link").html("https://" + window.location.hostname + "/login-form?username=" + username + "&password=" + password)
+
+        $("#user-password").on("input", function (e) {
+            password = e.target.value
+            $("#link").html("https://" + window.location.hostname + "/login-form?username=" + username + "&password=" + e.target.value)
+        });
+
+        $("#user-name").on("input", function (e) {
+            username = e.target.value
+            $("#link").html("https://" + window.location.hostname + "/login-form?username=" + e.target.value + "&password=" + password)
+        });
+
+        $("#before-add-user").on("click", function (e) {
+            alert("Be sure to copy the link !!!, https://" + window.location.hostname + "/login-form?username=" + username + "&password=" + password)
+            $("#add-user").removeClass("hidden")
+            $("#before-add-user").addClass("hidden")
+        });
+
+
+        // $("#add-user-form").submit(function (e) {
+        //     e.preventDefault();
+        //     sendForm1();
+        // });
+
+        // function sendForm1() {
+        //     var form = $("#form1");
+        //     var actionUrl = form.attr("action");
+        //     $.ajax({
+        //         type: "POST",
+        //         url: actionUrl,
+        //         data: form.serialize(),
+        //         success: function (data) {
+        //             if (!alert('The user was added!')) { window.location.reload(); }
+        //             // console.log(dataRecieved["0"]);
+        //             // console.log(dataRecieved["0"].banner);
+        //         },
+        //         error: function (XMLHttpRequest, textStatus, errorThrown) {
+        //             console.log("text status");
+        //             console.log(textStatus);
+        //             console.log("errorThrown");
+        //             console.log(errorThrown);
+        //         },
+        //     });
+        // }
+
+        // function sendForm1() {
+        //     // var actionUrl = form.attr("action");
+        //     $.ajax({
+        //         contentType: 'application/json',
+        //         type: "POST",
+        //         url: "http://localhost:3000/addICPUser",
+        //         data: JSON.stringify($("#add-user-form").serialize()),
+        //         success: function (data) {
+        //             if (!alert('The user was added!')) { window.location.reload(); }
+        //         },
+        //         error: function (XMLHttpRequest, textStatus, errorThrown) {
+        //             console.log("text status");
+        //             console.log(textStatus);
+        //             console.log("errorThrown");
+        //             console.log(errorThrown);
+        //         },
+        //     });
+        // }
+
+    });
+</script>
+
+</html>

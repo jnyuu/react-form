@@ -1,0 +1,110 @@
+/**
+* styles.scss
+* ---
+* Main `sass` file. Import here `sass` files
+*/
+
+
+
+$color-blue: #2827ae;
+$color-success: #007e33;
+$color-danger: #cc0000;
+$color-blue-dark: #11167e;
+
+
+
+// $color-highest: #49FA2A;
+// $color-high: #D9D42B;
+// $color-medium: #F0BA3C;
+// $color-low: #D9692B;
+// $color-none: #FC324C;
+
+
+
+$color-highest: #20BA55;
+$color-high: #21A5C4;
+$color-medium: #2626AD;
+$color-low: #A921C4;
+$color-none: #BD3229;
+
+
+
+* {
+    padding: 0;
+    margin: 0;
+    // color: #2827ae;
+    // box-sizing: border-box;
+    word-wrap: break-word;
+    font-family: "Quicksand", sans-serif;
+}
+
+
+
+body {
+    min-height: 100%;
+    background-color: #ffffff;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Modules*/
+@import "./_loginForm";
+@import "./_generalForm";
+@import "./_formBackground";
+@import "./_footer";
+@import "./_notFound";
+@import "./_formNavigation";
+@import "./_formSteps";
+
+
+@media only screen and (max-width: 1130px) {
+    .desktop-notice {
+        display: block !important;
+    }
+}
+
+.desktop-notice {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    z-index: 1000;
+    background-color: #fff;
+
+    div {
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+}
+
+.logout-button {
+    position: absolute;
+    top: 62px;
+    left: 12px;
+    border: 1px solid red;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    color: red;
+    transition: .3s;
+
+    &:hover {
+        background-color: red;
+        color: white;
+        border: 1px solid transparent;
+    }
+}
+
+
+// @import "modules/_variables";

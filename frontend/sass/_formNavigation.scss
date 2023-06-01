@@ -1,0 +1,86 @@
+.navigation-wrapper {
+    z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: rgb(60 66 87 / 12%) 0px 7px 14px 0px, rgb(0 0 0 / 12%) 0px 3px 6px 0px;
+    border-radius: 4px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    li {
+        display: inline-block;
+        margin: 15px;
+
+        a {
+            text-decoration: none;
+            color: $color-blue-dark;
+            font-size: 14px;
+            position: relative;
+
+            &::after {
+                position: absolute;
+                content: '';
+                height: 1px;
+                bottom: -4px;
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+                border-radius: 14px;
+                width: 33%;
+                background: $color-blue-dark;
+                -o-transition: .5s;
+                -ms-transition: .5s;
+                -moz-transition: .5s;
+                -webkit-transition: .5s;
+                transition: .5s;
+            }
+
+            &.active::after {
+                background: $color-blue-dark;
+                width: 100%;
+
+            }
+        }
+    }
+}
+
+.previous-step-button,
+.next-step-button {
+    background-color: white;
+    border: none;
+    position: absolute;
+    z-index: 100;
+    top: 50%;
+    font-size: 70px;
+    line-height: 70px;
+    border-radius: 4px;
+    color: $color-blue;
+    cursor: pointer;
+    padding: 5px;
+    width: 90px;
+    height: 90px;
+    -webkit-box-shadow: 0px 0px 36px -11px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 0px 0px 36px -11px rgba(66, 68, 90, 1);
+    box-shadow: 0px 0px 36px -11px rgba(66, 68, 90, 1);
+    transition: .3s;
+
+    &:hover {
+        color: white;
+        background-color: $color-blue;
+        -webkit-box-shadow: inset 0px 0px 36px -11px rgba(66, 68, 90, 1);
+        -moz-box-shadow: inset 0px 0px 36px -11px rgba(66, 68, 90, 1);
+        box-shadow: inset 0px 0px 36px -11px rgba(66, 68, 90, 1);
+    }
+}
+
+.next-step-button {
+    right: 9%;
+}
+
+.previous-step-button {
+    left: 9%;
+}

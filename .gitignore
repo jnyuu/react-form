@@ -1,0 +1,5 @@
+node_modules
+trashed
+notes
+.env
+backend/keys.json
