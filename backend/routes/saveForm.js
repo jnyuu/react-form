@@ -22,7 +22,7 @@ router.post("/", async function (req, res, next) {
         }
     }
 
-    await userModel.updateOne({ login: decodedLogin }, { ICPForm: req.body }).then(result => {
+    await userModel.updateOne({ login: decodedLogin }, { formData: req.body }).then(result => {
         const { matchedCount, modifiedCount } = result;
         if (matchedCount && modifiedCount) {
             console.log(`Successfully updated the item.`)

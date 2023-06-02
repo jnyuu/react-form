@@ -29,7 +29,7 @@ router.post("/", async function (req, res, next) {
     if (userExists.length > 0) {
         // user found
         // console.log("user found : " + userExists[0]);
-        return res.json(userExists[0].ICPForm);
+        return res.json(userExists[0].formData);
     } else {
         // user not found
         // console.log("user not found");

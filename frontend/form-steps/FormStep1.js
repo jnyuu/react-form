@@ -9,9 +9,9 @@ const FormStep1 = () => {
 
     const maxNumberOfFields = 10;
 
-    const setSingleIndustry = (e, id) => {
+    const setSingleValue = (e, id) => {
         let tempObj = [...step1]
-        tempObj[id].industry = e.target.value
+        tempObj[id].value = e.target.value
         setStep1(tempObj)
     }
 
@@ -20,7 +20,6 @@ const FormStep1 = () => {
         tempObj[id].priority = parseInt(e.target.value)
         setStep1(tempObj)
     }
-
 
     function removeField(e, id) {
         e.preventDefault();
@@ -40,7 +39,7 @@ const FormStep1 = () => {
         } else {
             let tempObj = [...step1]
             tempObj.push({
-                industry: "",
+                value: "",
                 priority: 0
             })
             setStep1(tempObj)
@@ -53,7 +52,7 @@ const FormStep1 = () => {
         {step1.map((el, index) => {
             if (index == 0) {
                 return <div className="form-field-wrapper form-field-wrapper--dynamic">
-                    <input type="text" placeholder="Enter an answer" value={el.industry} onChange={(e) => { setSingleIndustry(e, index) }} />
+                    <input type="text" placeholder="Enter an answer" value={el.value} onChange={(e) => { setSingleValue(e, index) }} />
                     <div className="slider-container">
                         <input type="range" min={0} max={10} value={el.priority} onChange={(e) => { setSinglePriority(e, index) }} />
                         <div className="higher-priority-label">Higher priority</div>
@@ -62,7 +61,7 @@ const FormStep1 = () => {
                 </div>
             } else {
                 return <div className="form-field-wrapper form-field-wrapper--dynamic">
-                    <input type="text" placeholder="Enter an answer" value={el.industry} onChange={(e) => { setSingleIndustry(e, index) }} />
+                    <input type="text" placeholder="Enter an answer" value={el.value} onChange={(e) => { setSingleValue(e, index) }} />
                     <div className="remove-field-button" onClick={(e) => { removeField(e, index) }}><i class="fa-solid fa-circle-minus"></i></div>
                     <div className="slider-container">
                         <input type="range" min={0} max={10} value={el.priority} onChange={(e) => { setSinglePriority(e, index) }} />

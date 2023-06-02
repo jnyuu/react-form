@@ -12,36 +12,31 @@ const UserSchema = new mongoose.Schema({
     token: {
         type: String,
     },
-    scraperUsed: {
-        type: Boolean,
-    },
-    scrapedCompaniesData: [{
-        type: Object
-    }],
-    ICPSpreadsheet: {
+
+    spreadsheetData: {
         spreadsheetId: { type: String },
         sheetId: { type: String },
         sheetName: { type: String }
     },
-    ICPForm: {
+    formData: {
         step1: [{
-            industry: { type: String },
+            value: { type: String },
             priority: { type: Number, min: 0, max: 10 }
         }],
         step2: {
             type: String
         },
         step3: [{
-            decisionMaker: { type: String },
+            value: { type: String },
             priority: { type: Number, min: 0, max: 10 }
         }],
         step4: [{
-            employees: { type: String },
+            value: { type: String },
             priority: { type: Number, min: 0, max: 10 }
         }],
         step5: {
-            revenue: { type: String },
-            funding: { type: String }
+            value1: { type: String },
+            value2: { type: String }
         },
         step6: { type: String },
         step7: [{
@@ -54,12 +49,12 @@ const UserSchema = new mongoose.Schema({
         }],
         step9: { type: String },
         step10: [{
-            dataPoint: { type: String },
+            value: { type: String },
             checked: { type: Boolean }
         }],
         step11: {
-            productJob: { type: String },
-            customerSolutions: { type: String }
+            value1: { type: String },
+            value2: { type: String }
         },
         step12: { type: String },
         step13: [{ type: String }],

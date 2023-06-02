@@ -45,20 +45,20 @@ const App = () => {
     const [formMessage, setFormMessage] = useState("");
 
     const [step1, setStep1] = useState([{
-        industry: "",
+        value: "",
         priority: 0
     }]);
     const [step2, setStep2] = useState("");
-    const [step3, setStep3] = useState([{ decisionMaker: "", priority: 0 }]);
+    const [step3, setStep3] = useState([{ value: "", priority: 0 }]);
     const [step4, setStep4] = useState([
         {
-            "employees": "1 person",
+            "value": "1 person",
             "priority": 0
         },
     ]);
     const [step5, setStep5] = useState({
-        revenue: "Don't Know",
-        funding: ""
+        value1: "Don't Know",
+        value2: ""
     });
     const [step6, setStep6] = useState("");
     const [step7, setStep7] = useState([{
@@ -72,29 +72,29 @@ const App = () => {
     const [step9, setStep9] = useState("");
     const [step10, setStep10] = useState([
         {
-            "dataPoint": "email",
+            "value": "email",
             "checked": false
         },
         {
-            "dataPoint": "phone",
+            "value": "phone",
             "checked": false
         },
         {
-            "dataPoint": "text",
+            "value": "text",
             "checked": false
         },
         {
-            "dataPoint": "socialMedia",
+            "value": "socialMedia",
             "checked": false
         },
         {
-            "dataPoint": "faceToFace",
+            "value": "faceToFace",
             "checked": false
         }
     ]);
     const [step11, setStep11] = useState({
-        "productJob": "",
-        "customerSolutions": ""
+        "value1": "",
+        "value2": ""
     });
     const [step12, setStep12] = useState("");
     const [step13, setStep13] = useState([""]);

@@ -9,7 +9,7 @@ const FormStep13 = () => {
 
     const maxNumberOfFields = 10;
 
-    function setSingleUrl(e, id) {
+    function setSingleValue(e, id) {
         let tempObj = [...step13]
         tempObj[id] = e.target.value
         setStep13(tempObj)
@@ -44,11 +44,11 @@ const FormStep13 = () => {
         {step13.map((el, index) => {
             if (index == 0) {
                 return <div className="form-field-wrapper form-field-wrapper--dynamic">
-                    <input type="text" placeholder="placeholder" value={el} onChange={(e) => { setSingleUrl(e, index) }} />
+                    <input type="text" placeholder="placeholder" value={el} onChange={(e) => { setSingleValue(e, index) }} />
                 </div>
             } else {
                 return <div className="form-field-wrapper form-field-wrapper--dynamic">
-                    <input type="text" placeholder="placeholder" value={el} onChange={(e) => { setSingleUrl(e, index) }} />
+                    <input type="text" placeholder="placeholder" value={el} onChange={(e) => { setSingleValue(e, index) }} />
                     <div className="remove-field-button" onClick={(e) => { removeField(e, index) }}><i class="fa-solid fa-circle-minus"></i></div>
                 </div>
 

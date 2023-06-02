@@ -7,14 +7,14 @@ const FormStep6 = () => {
 
     const { step6, setStep6 } = useContext(AllContext);
 
-    function setAssociations(e) {
+    function setValue(e) {
         setStep6(e.target.value)
     }
 
     return <GeneralFormWrapper title={"Example question 6"}
         tip={"Example tip 6 - textarea"}>
         <div className="form-field-wrapper ">
-            <textarea placeholder="placeholder" value={step6} onChange={(e) => { setAssociations(e) }}></textarea>
+            <textarea placeholder="placeholder" value={step6} onChange={(e) => { setValue(e) }}></textarea>
         </div>
     </GeneralFormWrapper>
 };

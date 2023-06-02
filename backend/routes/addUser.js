@@ -5,6 +5,7 @@ const { google } = require("googleapis");
 const path = require('path');
 const { validationResult, check } = require('express-validator')
 const userModel = require("../models/user");
+require('dotenv').config();
 
 router.get("/",
     function (req, res, next) {
@@ -29,7 +30,7 @@ router.post("/",
             });;
         };
 
-        if (req.body.key !== "WT3%Sj4hAlAoyNVKx^V%D4OrmTDJ8EiHI46O7Y2vYVW#E3bu0O") {
+        if (req.body.key !== process.env.ADD_USER_KEY) {
             res.status(400)
             res.send({
                 message: "invalid key"
@@ -54,46 +55,42 @@ router.post("/",
 
                 const googleSheetsInstance = google.sheets({ version: "v4", auth: authClientObject });
 
-                const newSheet = await addSheet(googleSheetsInstance, "1_51fJ7RBr8J5UlrjYxT_nBhYUb4F8KLbmNC3MU7flCk", req.body.userName, req.body.userPassword)
+                const newSheet = await addSheet(googleSheetsInstance, process.env.SPREADSHEET_ID, req.body.userName, req.body.userPassword)
 
                 if (newSheet.sheetCreated) {
                     const user = new userModel({
                         login: req.body.userName,
                         password: req.body.userPassword,
-                        scraperUsed: false,
                         token: "",
-                        scrapedCompaniesData: [
-                            {}
-                        ],
-                        ICPTimeTracked: [],
-                        ICPSpreadsheet: {
-                            spreadsheetId: "1_51fJ7RBr8J5UlrjYxT_nBhYUb4F8KLbmNC3MU7flCk",
+
+                        spreadsheetData: {
+                            spreadsheetId: process.env.SPREADSHEET_ID,
                             sheetId: newSheet.randomId,
                             sheetName: req.body.userName
                         },
-                        ICPForm: {
+                        formData: {
                             step1: [
                                 {
-                                    industry: "",
+                                    value: "",
                                     priority: 0
                                 }
                             ],
                             step2: "",
                             step3: [
                                 {
-                                    decisionMaker: "",
+                                    value: "",
                                     priority: 0
                                 }
                             ],
                             step4: [
                                 {
-                                    employees: "1 person",
+                                    value: "1 person",
                                     priority: 0
                                 }
                             ],
                             step5: {
-                                revenue: "Don't Know",
-                                funding: ""
+                                value1: "Don't Know",
+                                value2: ""
                             },
                             step6: "",
                             step7: [
@@ -111,29 +108,29 @@ router.post("/",
                             step9: "",
                             step10: [
                                 {
-                                    dataPoint: "email",
+                                    value: "email",
                                     checked: false
                                 },
                                 {
-                                    dataPoint: "phone",
+                                    value: "phone",
                                     checked: false
                                 },
                                 {
-                                    dataPoint: "text",
+                                    value: "text",
                                     checked: false
                                 },
                                 {
-                                    dataPoint: "socialMedia",
+                                    value: "socialMedia",
                                     checked: false
                                 },
                                 {
-                                    dataPoint: "faceToFace",
+                                    value: "faceToFace",
                                     checked: false
                                 }
                             ],
                             step11: {
-                                productJob: "",
-                                customerSolutions: ""
+                                value1: "",
+                                value2: ""
                             },
                             step12: "",
                             step13: [
@@ -185,127 +182,127 @@ async function addSheet(api, spreadsheetId, tabName, password) {
             });
 
             const rows = [{
-                values: createColoredRow("User data :  https://sulma-icp-2.herokuapp.com/login-form?username=" + tabName + "&password=" + password, {
+                values: createColoredRow("Instant login link :  https://localhost:3000/login-form?username=" + tabName + "&password=" + password, {
                     red: 0.2,
                     green: 0.66,
                     blue: 0.33
                 })
             }, {
-                values: createColoredRow("STEP 1 - Industry", {
+                values: createColoredRow("STEP 1 - example description ", {
                     red: 0.98,
                     green: 0.74,
                     blue: 0.02
                 })
             }, {
-                values: createColoredRow("STEP 1 - Industry priority (0-10)", {
+                values: createColoredRow("STEP 1 - example description", {
                     red: 0.98,
                     green: 0.74,
                     blue: 0.02
                 })
             }, {
-                values: createColoredRow("STEP 2 - Who or what to avoid", {
+                values: createColoredRow("STEP 2 - example description", {
                     red: 0.75,
                     green: 0.56,
                     blue: 0.00
                 })
             }, {
-                values: createColoredRow("STEP 3 - Decision maker", {
+                values: createColoredRow("STEP 3 - example description", {
                     red: 0.98,
                     green: 0.74,
                     blue: 0.02
                 })
             }, {
-                values: createColoredRow("STEP 3 - Decision maker priority (0-10)", {
+                values: createColoredRow("STEP 3 - example description", {
                     red: 0.98,
                     green: 0.74,
                     blue: 0.02
                 })
             }, {
-                values: createColoredRow("STEP 4 - Employee count", {
+                values: createColoredRow("STEP 4 - example description", {
                     red: 0.75,
                     green: 0.56,
                     blue: 0.00
                 })
             }, {
-                values: createColoredRow("STEP 4 - Employee count priority (0-10)", {
+                values: createColoredRow("STEP 4 - example description", {
                     red: 0.75,
                     green: 0.56,
                     blue: 0.00
                 })
             }, {
-                values: createColoredRow("STEP 5 - Revenue", {
+                values: createColoredRow("STEP 5 - example description", {
                     red: 0.98,
                     green: 0.74,
                     blue: 0.02
                 })
             }, {
-                values: createColoredRow("STEP 5 - Funding", {
+                values: createColoredRow("STEP 5 - example description", {
                     red: 0.98,
                     green: 0.74,
                     blue: 0.02
                 })
             }, {
-                values: createColoredRow("STEP 6 - Associations", {
+                values: createColoredRow("STEP 6 - example description", {
                     red: 0.75,
                     green: 0.56,
                     blue: 0.00
                 })
             }, {
-                values: createColoredRow("STEP 7 - Where are they from?", {
+                values: createColoredRow("STEP 7 - example description", {
                     red: 0.98,
                     green: 0.74,
                     blue: 0.02
                 })
             }, {
-                values: createColoredRow("STEP 8 - What regions do they target?", {
+                values: createColoredRow("STEP 8 - example description", {
                     red: 0.75,
                     green: 0.56,
                     blue: 0.00
                 })
             }, {
-                values: createColoredRow("STEP 9 - Customer Similarities", {
+                values: createColoredRow("STEP 9 - example description", {
                     red: 0.98,
                     green: 0.74,
                     blue: 0.02
                 })
             }, {
-                values: createColoredRow("STEP 10 - Data point", {
+                values: createColoredRow("STEP 10 - example description", {
                     red: 0.75,
                     green: 0.56,
                     blue: 0.00
                 })
             }, {
-                values: createColoredRow("STEP 10 - Data point priority", {
+                values: createColoredRow("STEP 10 - example description", {
                     red: 0.75,
                     green: 0.56,
                     blue: 0.00
                 })
             }, {
-                values: createColoredRow("STEP 11 - Product Job", {
+                values: createColoredRow("STEP 11 - example description", {
                     red: 0.98,
                     green: 0.74,
                     blue: 0.02
                 })
             }, {
-                values: createColoredRow("STEP 11 - Customer Solutions", {
+                values: createColoredRow("STEP 11 - example description", {
                     red: 0.98,
                     green: 0.74,
                     blue: 0.02
                 })
             }, {
-                values: createColoredRow("STEP 12 - Customers' special requirements", {
+                values: createColoredRow("STEP 12 - example description", {
                     red: 0.75,
                     green: 0.56,
                     blue: 0.00
                 })
             }, {
-                values: createColoredRow("STEP 13 - Top competitors", {
+                values: createColoredRow("STEP 13 - example description", {
                     red: 0.98,
                     green: 0.74,
                     blue: 0.02
                 })
             }, {
-                values: createColoredRow("STEP 14 - top goal for the cooperation", {
+                values: createColoredRow("STEP 14 - example description", {
                     red: 0.75,
                     green: 0.56,
                     blue: 0.00

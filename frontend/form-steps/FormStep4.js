@@ -15,9 +15,9 @@ const FormStep4 = () => {
         setStep4(tempObj)
     }
 
-    const setSingleEmployeeCount = (e, id) => {
+    const setSingleValue = (e, id) => {
         let tempObj = [...step4]
-        tempObj[id].employees = e.target.value
+        tempObj[id].value = e.target.value
         setStep4(tempObj)
     }
 
@@ -39,7 +39,7 @@ const FormStep4 = () => {
         } else {
             let tempObj = [...step4]
             tempObj.push({
-                employees: "",
+                value: "1 person",
                 priority: 0
             })
             setStep4(tempObj)
@@ -53,7 +53,7 @@ const FormStep4 = () => {
             if (index == 0) {
                 return <div className="form-field-wrapper form-field-wrapper--dynamic">
 
-                    <select value={el.employees} name="" id="" onChange={(e) => { setSingleEmployeeCount(e, index) }}>
+                    <select value={el.value} name="" id="" onChange={(e) => { setSingleValue(e, index) }}>
                         <option value="1 person">1 person</option>
                         <option value="2 - 10 employees">2 - 10 employees</option>
                         <option value="11 - 50 employees" >11 - 50 employees</option>
@@ -75,7 +75,7 @@ const FormStep4 = () => {
                 return <div className="form-field-wrapper form-field-wrapper--dynamic">
                     <div className="remove-field-button" onClick={(e) => { removeField(e, index) }}><i class="fa-solid fa-circle-minus"></i></div>
 
-                    <select value={el.employees} name="" id="" onChange={(e) => { setSingleEmployeeCount(e, index) }}>
+                    <select value={el.value} name="" id="" onChange={(e) => { setSingleValue(e, index) }}>
                         <option value="1 person">1 person</option>
                         <option value="2 - 10 employees">2 - 10 employees</option>
                         <option value="11 - 50 employees" >11 - 50 employees</option>
@@ -93,10 +93,9 @@ const FormStep4 = () => {
                         <div className="lower-priority-label" >Lower priority</div>
                     </div>
                 </div>
-
-
             }
         })}
+
         {
             step4.length >= maxNumberOfFields ? <React.Fragment></React.Fragment> : <div
                 className="add-field-button"

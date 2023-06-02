@@ -7,14 +7,14 @@ const FormStep14 = () => {
 
     const { step14, setStep14 } = useContext(AllContext);
 
-    function setCustomerSolutions(e) {
+    function setValue(e) {
         setStep14(e.target.value)
     }
 
     return <GeneralFormWrapper title={"Example question 14"}
         tip={"Example tip 14 - textarea"}>
         <div className="form-field-wrapper ">
-            <textarea placeholder="placeholder" value={step14} onChange={(e) => { setCustomerSolutions(e) }}></textarea>
+            <textarea placeholder="placeholder" value={step14} onChange={(e) => { setValue(e) }}></textarea>
         </div>
     </GeneralFormWrapper>
 };
