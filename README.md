@@ -46,3 +46,9 @@ ADD_USER_KEY="YOUR_ADD_USER_KEY"
 ## Adding a user
 
 1. localhost:PORT/addUser
+
+## Starting the server
+
+```
+npm run start
+```
