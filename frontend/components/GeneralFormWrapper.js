@@ -11,7 +11,7 @@ const GeneralFormWrapper = (props) => {
 
             <form onSubmit={onSubmit} >
                 <div className="form-logo-wrapper">
-                    <img height="110" src="/img/SS-logo-no-letters.png" alt="logo" className="form-logo" />
+                    <img height="110" src="/img/logo.png" alt="logo" className="form-logo" />
                 </div>
                 <h1 className="form-title">{title}</h1>
                 <p className="tip">{tip}</p>

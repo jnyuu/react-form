@@ -17,8 +17,8 @@ const FormStep5 = () => {
         setStep5(tempObj)
     }
 
-    return <GeneralFormWrapper title={"Example question ?"}
-        tip={"Example description ?"}
+    return <GeneralFormWrapper title={"Example question 5"}
+        tip={"Example tip 5 - An example select box 'revenue', and an example text box"}
         formClass="step-5">
         <div className="form-field-wrapper ">
             <select value={step5.revenue} name="" id="" onChange={(e) => { setRevenue(e) }}>

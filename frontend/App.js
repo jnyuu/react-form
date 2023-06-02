@@ -102,10 +102,7 @@ const App = () => {
 
     useEffect(() => {
         if (loggedIn) {
-            // axios.post('http://localhost:3000/saveICPForm', {
-            // axios.post("http://" + window.location.hostname + '/saveICPForm', {
             axios.post('/saveForm', {
-                // axios.post("https://" + window.location.hostname + ':3000/saveICPForm', {
                 step1: step1,
                 step2: step2,
                 step3: step3,
@@ -120,16 +117,14 @@ const App = () => {
                 step12: step12,
                 step13: step13,
                 step14: step14,
-                // step15: step15
             })
                 .then(response => {
                     if (response.status === 200) {
-                        // console.log("Form Saved : 200 - czytanie formularza - ReadAndSetForm.js");
-                        console.log(response);
+                        // console.log(response);
                     }
                 })
                 .catch(function (error) {
-                    // console.log("Error Couldn't save form");
+                    console.log("Error Couldn't save form");
                     console.log(error);
                 });
         }

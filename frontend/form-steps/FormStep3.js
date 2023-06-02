@@ -47,8 +47,8 @@ const FormStep3 = () => {
         }
     }
 
-    return <GeneralFormWrapper title={"Example question ?"}
-        tip={"Example description ?"} formClass="step-3">
+    return <GeneralFormWrapper title={"Example question 3"}
+        tip={"Example tip 3 - items with priorities"} formClass="step-3">
         {step3.map((el, index) => {
             if (index == 0) {
                 return <div className="form-field-wrapper form-field-wrapper--dynamic">

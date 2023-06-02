@@ -46,8 +46,8 @@ const FormStep4 = () => {
         }
     }
 
-    return <GeneralFormWrapper title={"Example question ?"}
-        tip={"Example description ?"} formClass="step-4">
+    return <GeneralFormWrapper title={"Example question 4"}
+        tip={"Example tip 4 - linkedin company employees count select boxes, with an example 'priorities' slider"} formClass="step-4">
 
         {step4.map((el, index) => {
             if (index == 0) {

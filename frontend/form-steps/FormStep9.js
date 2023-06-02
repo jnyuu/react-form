@@ -11,10 +11,10 @@ const FormStep9 = () => {
         setStep9(e.target.value)
     }
 
-    return <GeneralFormWrapper title={"Example question ?"}
-        tip={"Example description ?"}>
+    return <GeneralFormWrapper title={"Example question 9"}
+        tip={"Example tip 9 - textarea"}>
         <div className="form-field-wrapper ">
-            <textarea placeholder="The similarities between my target customers are..." value={step9} onChange={(e) => { setCustomerSimiliarities(e) }}></textarea>
+            <textarea placeholder="placeholder" value={step9} onChange={(e) => { setCustomerSimiliarities(e) }}></textarea>
         </div>
     </GeneralFormWrapper>
 };

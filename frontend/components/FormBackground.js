@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
-
-
 const FormBackground = () => {
     return <div className="loginbackground box-background--white" style={{ paddingTop: "64px" }}>
         <div className="loginbackground-gridContainer">

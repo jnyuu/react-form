@@ -22,13 +22,9 @@ const ReadAndSetForm = (props) => {
         step14, setStep14,
     } = useContext(AllContext);
 
-
     useEffect(() => {
 
-        // axios.post('http://localhost:3000/readICPForm')
-        // axios.post("http://" + window.location.hostname + '/readICPForm')
         axios.post('/readForm')
-            // axios.post("https://" + window.location.hostname + ':3000/readICPForm')
             .then(response => {
 
                 if (response.status === 200) {

@@ -12,8 +12,8 @@ const FormStep10 = () => {
         setStep10(tempObj)
     }
 
-    return <GeneralFormWrapper title={"Example question ?"}
-        tip={"Example description ?"}
+    return <GeneralFormWrapper title={"Example question 10"}
+        tip={"Example tip 10 - Toggle boxes"}
         formClass="step-10"
     >
         <div className="container">

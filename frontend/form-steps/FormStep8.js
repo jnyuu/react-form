@@ -42,8 +42,8 @@ const FormStep8 = () => {
         }
     }
 
-    return <GeneralFormWrapper title={"Example question ?"}
-        tip={"Example description ?"}
+    return <GeneralFormWrapper title={"Example question 8"}
+        tip={"Example tip 8 - Country/Region select boxes"}
         formClass="step-8" >
         {step8.map((el, index) => {
             if (index == 0) {

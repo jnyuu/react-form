@@ -21,10 +21,7 @@ const LoginForm = (props) => {
                 username: searchParams.get("username"),
                 password: searchParams.get("password")
             };
-            // axios.post('http://localhost:3000/login', body)
-            // axios.post("http://" + window.location.hostname + '/login', body)
             axios.post('/login', body)
-                // axios.post("https://" + window.location.hostname + ':3000/login', body)
                 .then(response => {
                     setLoading(false)
                     console.log(response);
@@ -37,10 +34,7 @@ const LoginForm = (props) => {
                     console.log(error);
                 });
         } else {
-            // axios.post('http://localhost:3000/login/initial-cookie-check')
             axios.post('/login/initial-cookie-check')
-                // axios.post("http://" + window.location.hostname + '/login/initial-cookie-check')
-                // axios.post("https://" + window.location.hostname + ':3000/login/initial-cookie-check')
                 .then(response => {
                     if (response.status === 200) {
                         setLoggedIn(true)
@@ -53,7 +47,6 @@ const LoginForm = (props) => {
 
                 });
         }
-        // console.log(window.location.hostname);
 
     }, [])
 
@@ -78,10 +71,7 @@ const LoginForm = (props) => {
         };
 
         setLoading(true)
-        // axios.post('http://localhost:3000/login', body)
-        // axios.post("http://" + window.location.hostname + '/login', body)
         axios.post('/login', body)
-            // axios.post("https://" + window.location.hostname + ':3000/login', body)
             .then(response => {
                 setLoading(false)
                 console.log(response);

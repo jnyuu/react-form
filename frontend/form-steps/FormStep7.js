@@ -43,8 +43,8 @@ const FormStep7 = () => {
         }
     }
 
-    return <GeneralFormWrapper title={"Example question ?"}
-        tip={"Example description ?"}
+    return <GeneralFormWrapper title={"Example question 7"}
+        tip={"Example tip 7 - Country/Region select boxes"}
         formClass="step-7">
 
 

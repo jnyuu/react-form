@@ -39,8 +39,8 @@ const FormStep13 = () => {
 
     return <GeneralFormWrapper
         formClass="step-13"
-        title={"Example question ?"}
-        tip={"Example description ?"}>
+        title={"Example question 13"}
+        tip={"Example tip 13 - multiple text boxes"}>
         {step13.map((el, index) => {
             if (index == 0) {
                 return <div className="form-field-wrapper form-field-wrapper--dynamic">

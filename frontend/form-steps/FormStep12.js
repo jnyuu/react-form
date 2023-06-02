@@ -11,8 +11,8 @@ const FormStep12 = () => {
         setStep12(e.target.value)
     }
 
-    return <GeneralFormWrapper title={"Example question ?"}
-        tip={"Example description ?"}>
+    return <GeneralFormWrapper title={"Example question 12"}
+        tip={"Example tip 12 - textarea"}>
         <div className="form-field-wrapper ">
             <textarea placeholder="placeholder" value={step12} onChange={(e) => { setCustomersSpecialRequirements(e) }}></textarea>
         </div>

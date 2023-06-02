@@ -12,7 +12,6 @@ const Protected = ({ children }) => {
     useEffect(() => {
 
         axios.post('/login/initial-cookie-check')
-            // axios.post("https://" + window.location.hostname + ':3000/login/initial-cookie-check')
             .then(response => {
 
                 if (response.status === 200) {

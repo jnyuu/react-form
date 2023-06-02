@@ -11,8 +11,8 @@ const FormStep2 = () => {
         setStep2(e.target.value)
     }
 
-    return <GeneralFormWrapper title={"Example question ?"}
-        tip={"Example description ?"}>
+    return <GeneralFormWrapper title={"Example question 2"}
+        tip={"Example tip 2 - textarea"}>
         <div className="form-field-wrapper ">
             <textarea placeholder="placeholder" value={step2} onChange={(e) => { setWhoToAvoid(e) }}></textarea>
         </div>

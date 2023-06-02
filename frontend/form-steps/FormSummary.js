@@ -44,10 +44,7 @@ const FormSummary = () => {
                 step14: step14
             }
             console.log(body);
-            // axios.post('http://localhost:3000/submitICPForm', {
-            // axios.post("http://" + window.location.hostname + '/submitICPForm', body)
             axios.post('/submitForm', body)
-                // axios.post("https://" + window.location.hostname + ':3000/submitICPForm', body)
                 .then(response => {
                     if (response.status === 200) {
                         console.log(response);
@@ -63,37 +60,6 @@ const FormSummary = () => {
         }
     }
 
-    // const testRequest = () => {
-    //     if (loggedIn) {
-    //         axios.post('http://localhost:3000/test', {
-    //             username: "123",
-    //             password: "xdxd",
-    //             step1: step1,
-    //             step2: step2,
-    //             step3: step3,
-    //             step4: step4,
-    //             step5: step5,
-    //             step6: step6,
-    //             step7: step7,
-    //             step8: step8,
-    //             step9: step9,
-    //             step10: step10,
-    //             step11: step11,
-    //             step12: step12,
-    //             step13: step13,
-    //             step14: step14,
-    //         })
-    //             .then(response => {
-    //                 if (response.status === 200) {
-    //                     console.log(response);
-    //                     console.log(response.data.message);
-    //                 }
-    //             })
-    //             .catch(function (error) {
-    //                 console.log(error);
-    //             });
-    //     }
-    // }
 
 
     return <GeneralFormWrapper title={"Form summary"}
@@ -102,7 +68,6 @@ const FormSummary = () => {
         <input onClick={(e) => { submitForm(e) }} type="submit" value="Submit" />
         <p className="error-message">{errorMessage}</p>
         <p className="success-message">{successMessage}</p>
-        {/* <button onClick={(e) => { testRequest() }}>EZ</button> */}
     </GeneralFormWrapper>
 };
 

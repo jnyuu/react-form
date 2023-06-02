@@ -6,10 +6,7 @@ const Logout = ({ }) => {
     const [logout, setLogout] = useState(false);
 
     const Logout = () => {
-        // axios.post('http://localhost:3000/logout')
-        // axios.post("http://" + window.location.hostname + '/logout')
         axios.post('/logout')
-            // axios.post("https://" + window.location.hostname + ':3000/logout')
             .then(response => {
 
                 if (response.status === 200) {
