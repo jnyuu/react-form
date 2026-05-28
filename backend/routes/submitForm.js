@@ -3,16 +3,8 @@ const { validationResult, check } = require('express-validator')
 const express = require('express');
 const { google } = require("googleapis");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
-
 require('dotenv').config();
 const userModel = require("../models/user");
-
-const cookieExtractor = function (req) {
-    var token = null;
-    if (req && req.cookies) token = req.cookies['token'];
-    return token;
-};
 
 router.post("/",
     check("step1", "Step 1 - array error").isArray({ min: 1, max: 10 }),
@@ -47,38 +39,24 @@ router.post("/",
     , async function (req, res, next) {
 
         const validationResults = validationResult(req);
-
-        console.log(validationResults.errors);
-        if (validationResults.errors.length !== 0) {
+        if (!validationResults.isEmpty()) {
             return res.status(400).send({
-                message: validationResults.errors
-            });;
-        };
-
-        const authToken = cookieExtractor(req)
-        let decodedLogin;
-        if (authToken) {
-            try {
-                decodedLogin = jwt.verify(authToken, process.env.JWT_SECRET)
-            } catch (e) {
-                console.log(e);
-            }
+                message: validationResults.array()
+            });
         }
 
-        const userExists = await userModel.find({ login: decodedLogin })
+        if (!req.user) return res.status(401).send({ message: 'Unauthorized' });
+        const user = await userModel.findById(req.user._id).lean();
+        if (!user) return res.status(400).send({ message: 'user not found' });
 
-        if (userExists.length > 0) {
+        const spreadsheetData = user.spreadsheetData;
+        const googleAuth = new google.auth.GoogleAuth({
+            keyFile: "backend/keys.json",
+            scopes: "https://www.googleapis.com/auth/spreadsheets",
+        });
 
-            const spreadsheetData = userExists[0].spreadsheetData
-            const auth = new google.auth.GoogleAuth({
-                keyFile: "backend/keys.json"
-                ,
-                scopes: "https://www.googleapis.com/auth/spreadsheets",
-            });
-
-            const authClientObject = await auth.getClient();
-
-            const googleSheetsInstance = google.sheets({ version: "v4", auth: authClientObject });
+        const authClientObject = await googleAuth.getClient();
+        const googleSheetsInstance = google.sheets({ version: "v4", auth: authClientObject });
 
             const step1Row1 = [];
             const step1Row2 = [];
@@ -148,40 +126,27 @@ router.post("/",
             }
 
 
-            try {
-                await googleSheetsInstance.spreadsheets.values.update({
-                    auth: auth, //auth object
-                    spreadsheetId: spreadsheetData.spreadsheetId, //spreadsheet id
-                    range: spreadsheetData.sheetName + "!B2:Z31", //sheet name and range of cells
-                    valueInputOption: "USER_ENTERED", // The information will be passed according to what the usere passes in as date, number or text
-                    resource: {
-                        values: [step1Row1, step1Row2, step2,
-                            step3Row1, step3Row2, step4Row1, step4Row2,
-                            step5Row1, step5Row2, step6, step7, step8, step9,
-                            step10Row1, step10Row2, step11Row1, step11Row2,
-                            step12, step13, step14]
-                    },
-                });
+        try {
+            await googleSheetsInstance.spreadsheets.values.update({
+                spreadsheetId: spreadsheetData.spreadsheetId,
+                range: `${spreadsheetData.sheetName}!B2:Z31`,
+                valueInputOption: "USER_ENTERED",
+                resource: {
+                    values: [step1Row1, step1Row2, step2,
+                        step3Row1, step3Row2, step4Row1, step4Row2,
+                        step5Row1, step5Row2, step6, step7, step8, step9,
+                        step10Row1, step10Row2, step11Row1, step11Row2,
+                        step12, step13, step14]
+                },
+            });
 
-                console.log("form submit : " + decodedLogin);
+            console.log("form submit : " + user.login);
 
-                return res.status(200).send({
-                    message: "Form submitted"
-                });
+            return res.status(200).send({ message: "Form submitted" });
 
-
-            } catch (err) {
-                return res.status(400).send({
-                    message: err
-                });;
-            }
-        } else {
-            console.log("user not found - submit form ");
-
-            // user not found
-            return res.status(400).send({
-                message: "user not found"
-            });;
+        } catch (err) {
+            console.error('submitForm error', err);
+            return res.status(500).send({ message: 'Error submitting form' });
         }
     });
 

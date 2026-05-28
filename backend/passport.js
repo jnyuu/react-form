@@ -14,30 +14,18 @@ let cookieExtractor = function (req) {
 };
 
 passport.use(new LocalStrategy(
-
     async function (login, password, cb) {
+        try {
+            const user = await userModel.findOne({ login: login });
+            if (!user) return cb(null, false, { message: 'Incorrect login or password.' });
 
-        let user
-        const userExists = await userModel.find({ login: login })
-        if (userExists.length > 0) {
-            // user found
-            console.log("user found passport.js");
-            // console.log("user found : " + userExists[0]);
-            user = userExists[0]
+            const match = await user.comparePassword(password);
+            if (!match) return cb(null, false, { message: 'Incorrect login or password.' });
 
-        } else {
-            // user not found
-            console.log("user not found");
-        }
-
-        if (user.password === password) {
-            console.log("correct password");
             return cb(null, user, { message: 'Logged In Successfully' });
-        } else {
-            return cb(null, false, { message: 'Incorrect login or password.' });
+        } catch (err) {
+            return cb(err);
         }
-
-
     }
 ));
 
@@ -47,21 +35,15 @@ passport.use(new JWTStrategy({
     secretOrKey: process.env.JWT_SECRET
 },
     async function (jwtPayload, cb) {
-        let user
-        const userExists = await userModel.find({ login: jwtPayload })
-        if (userExists.length > 0) {
-            // user found
-            console.log("user found passport.js ");
-            user = userExists[0]
-
-        } else {
-            // user not found
-            console.log("user not found");
-        }
-        if (user) {
-            cb(null, user);
-        } else {
-            cb(null, false);
+        try {
+            // expect payload to be an object { userId, login }
+            const id = jwtPayload && (jwtPayload.userId || jwtPayload.id);
+            if (!id) return cb(null, false);
+            const user = await userModel.findById(id);
+            if (user) return cb(null, user);
+            return cb(null, false);
+        } catch (err) {
+            return cb(err, false);
         }
     }
 ));

@@ -21,141 +21,101 @@ router.post("/",
     check("userPassword", "userPassword doesnt exist").exists(),
     check("userPassword", "userPassword isnt a string").isString(),
     async function (req, res, next) {
+        console.log('addUser POST payload:', {
+            body: req.body,
+            envAddUserKey: process.env.ADD_USER_KEY ? '[REDACTED]' : undefined,
+        });
 
         const validationResults = validationResult(req);
-
-        if (validationResults.errors.length !== 0) {
+        if (!validationResults.isEmpty()) {
+            console.error('addUser validation failed:', validationResults.array());
             return res.status(400).send({
-                message: validationResults.errors
-            });;
-        };
+                message: validationResults.array()
+            });
+        }
 
-        if (req.body.key !== process.env.ADD_USER_KEY) {
-            res.status(400)
-            res.send({
+        const isKeyValid = req.body.key === process.env.ADD_USER_KEY;
+        console.log('addUser key valid:', isKeyValid);
+        if (!isKeyValid) {
+            return res.status(400).send({
                 message: "invalid key"
             });
-        } else {
-
-            const userExists = await userModel.find({ login: req.body.userName })
-
-            if (userExists.length > 0) {
-                return res.status(400).send({
-                    message: "user with the same username exists in the database"
-                });;
-            } else {
-
-                const auth = new google.auth.GoogleAuth({
-                    keyFile: "backend/keys.json"
-                    ,
-                    scopes: "https://www.googleapis.com/auth/spreadsheets",
-                });
-
-                const authClientObject = await auth.getClient();
-
-                const googleSheetsInstance = google.sheets({ version: "v4", auth: authClientObject });
-
-                const newSheet = await addSheet(googleSheetsInstance, process.env.SPREADSHEET_ID, req.body.userName, req.body.userPassword)
-
-                if (newSheet.sheetCreated) {
-                    const user = new userModel({
-                        login: req.body.userName,
-                        password: req.body.userPassword,
-                        token: "",
-
-                        spreadsheetData: {
-                            spreadsheetId: process.env.SPREADSHEET_ID,
-                            sheetId: newSheet.randomId,
-                            sheetName: req.body.userName
-                        },
-                        formData: {
-                            step1: [
-                                {
-                                    value: "",
-                                    priority: 0
-                                }
-                            ],
-                            step2: "",
-                            step3: [
-                                {
-                                    value: "",
-                                    priority: 0
-                                }
-                            ],
-                            step4: [
-                                {
-                                    value: "1 person",
-                                    priority: 0
-                                }
-                            ],
-                            step5: {
-                                value1: "Don't Know",
-                                value2: ""
-                            },
-                            step6: "",
-                            step7: [
-                                {
-                                    label: "Choose the : country/region/state",
-                                    value: "Choose the : country/region/state"
-                                }
-                            ],
-                            step8: [
-                                {
-                                    label: "Choose the : country/region/state",
-                                    value: "Choose the : country/region/state"
-                                }
-                            ],
-                            step9: "",
-                            step10: [
-                                {
-                                    value: "email",
-                                    checked: false
-                                },
-                                {
-                                    value: "phone",
-                                    checked: false
-                                },
-                                {
-                                    value: "text",
-                                    checked: false
-                                },
-                                {
-                                    value: "socialMedia",
-                                    checked: false
-                                },
-                                {
-                                    value: "faceToFace",
-                                    checked: false
-                                }
-                            ],
-                            step11: {
-                                value1: "",
-                                value2: ""
-                            },
-                            step12: "",
-                            step13: [
-                                ""
-                            ],
-                            step14: ""
-                        }
-                    });
-                    try {
-                        await user.save();
-                    } catch (err) {
-                        console.log(err);
-                        return response.status(500).send(err);
-                    }
-                    return res.status(200).send({
-                        message: "user added to database"
-                    });
-                } else {
-                    return res.status(400).send({
-                        message: "error when adding a sheet"
-                    });
-                }
-            }
         }
-    });
+
+        const existingUser = await userModel.findOne({ login: req.body.userName });
+        console.log('addUser existing user found:', Boolean(existingUser), 'for login:', req.body.userName);
+        if (existingUser) {
+            return res.status(400).send({
+                message: "user with the same username exists in the database"
+            });
+        }
+
+        console.log('addUser creating Google Sheets sheet for:', req.body.userName);
+        const auth = new google.auth.GoogleAuth({
+            keyFile: "backend/keys.json",
+            scopes: "https://www.googleapis.com/auth/spreadsheets",
+        });
+
+        const authClientObject = await auth.getClient();
+        console.log('addUser Google auth client created');
+
+        const googleSheetsInstance = google.sheets({ version: "v4", auth: authClientObject });
+
+        const newSheet = await addSheet(googleSheetsInstance, process.env.SPREADSHEET_ID, req.body.userName, req.body.userPassword);
+        console.log('addUser addSheet result:', newSheet);
+
+        if (!newSheet.sheetCreated) {
+            console.error('addUser sheet creation failed:', newSheet);
+            return res.status(400).send({
+                message: "error when adding a sheet",
+                details: newSheet
+            });
+        }
+
+        const user = new userModel({
+            login: req.body.userName,
+            password: req.body.userPassword,
+            token: "",
+            spreadsheetData: {
+                spreadsheetId: process.env.SPREADSHEET_ID,
+                sheetId: newSheet.randomId,
+                sheetName: req.body.userName
+            },
+            formData: {
+                step1: [{ value: "", priority: 0 }],
+                step2: "",
+                step3: [{ value: "", priority: 0 }],
+                step4: [{ value: "1 person", priority: 0 }],
+                step5: { value1: "Don't Know", value2: "" },
+                step6: "",
+                step7: [{ label: "Choose the : country/region/state", value: "Choose the : country/region/state" }],
+                step8: [{ label: "Choose the : country/region/state", value: "Choose the : country/region/state" }],
+                step9: "",
+                step10: [
+                    { value: "email", checked: false },
+                    { value: "phone", checked: false },
+                    { value: "text", checked: false },
+                    { value: "socialMedia", checked: false },
+                    { value: "faceToFace", checked: false }
+                ],
+                step11: { value1: "", value2: "" },
+                step12: "",
+                step13: [""],
+                step14: ""
+            }
+        });
+
+        try {
+            await user.save();
+            console.log('addUser saved user:', req.body.userName);
+        } catch (err) {
+            console.error('addUser user.save failed:', err);
+            return res.status(500).send({ message: 'Failed to save new user', error: err.toString() });
+        }
+
+        return res.status(200).send({ message: "user added to database" });
+    }
+);
 
 async function addSheet(api, spreadsheetId, tabName, password) {
     try {
@@ -334,10 +294,12 @@ async function addSheet(api, spreadsheetId, tabName, password) {
 
             return { sheetCreated: true, randomId: randomId }
         } else {
-            return { sheetCreated: false }
+            console.warn('addSheet skipped because tab already exists:', tabName);
+            return { sheetCreated: false, reason: 'tab already exists' };
         }
     } catch (err) {
-        return { sheetCreated: false }
+        console.error('addSheet caught error:', err);
+        return { sheetCreated: false, error: err.toString(), stack: err.stack };
     }
 }
 

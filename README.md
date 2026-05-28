@@ -25,7 +25,7 @@ npm i
 
 2. Create mongoDBcluster, create a user, enable access from your IP address, go to "Connect" -> "Drivers", copy the connection string into the .ENV (DATABASE_URI), change the "<password>" to your mongoDB user password
 
-3. Create a google sheet, copy its id from the URL, enable access to it to everyone with the link
+3. Create a google sheet, copy its id from the URL, enable access to it to your new user in keys.json - ("client_email":XXXXXXXXXXXXXXXXXXXXXXXX)
 
 4. Create an .env file in the root directory (example .env structure below) with :
 

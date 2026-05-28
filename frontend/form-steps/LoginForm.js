@@ -11,42 +11,19 @@ const LoginForm = (props) => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const { formMessage, loggedIn, setLoggedIn } = useContext(AllContext);
-    const [searchParams, setSearchParams] = useSearchParams();
-
     useEffect(() => {
         setLoading(true)
-
-        if (searchParams.get("username") && searchParams.get("password")) {
-            const body = {
-                username: searchParams.get("username"),
-                password: searchParams.get("password")
-            };
-            axios.post('/login', body)
-                .then(response => {
-                    setLoading(false)
-                    console.log(response);
-                    if (response.status === 200) {
-                        setLoggedIn(true)
-                    }
-                })
-                .catch(function (error) {
-                    setLoading(false)
-                    console.log(error);
-                });
-        } else {
-            axios.post('/login/initial-cookie-check')
-                .then(response => {
-                    if (response.status === 200) {
-                        setLoggedIn(true)
-                    }
-                    setLoading(false)
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    setLoading(false)
-
-                });
-        }
+        axios.post('/login/initial-cookie-check')
+            .then(response => {
+                if (response.status === 200) {
+                    setLoggedIn(true)
+                }
+                setLoading(false)
+            })
+            .catch(function (error) {
+                console.log(error);
+                setLoading(false)
+            });
 
     }, [])
 
@@ -77,6 +54,7 @@ const LoginForm = (props) => {
                 console.log(response);
                 if (response.status === 200) {
                     setLoggedIn(true)
+                    setPassword('')
                 }
             })
             .catch(function (error) {

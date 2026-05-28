@@ -2,6 +2,8 @@ const express = require("express");
 const port = process.env.PORT || 3000;
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const rateLimit = require('express-rate-limit')
+const helmet = require('helmet')
 require('dotenv').config();
 
 const mongoose = require('mongoose')
@@ -17,7 +19,16 @@ require('./passport');
 
 const app = express();
 
-app.use(cors());
+app.use(helmet());
+
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean);
+if (allowedOrigins.length) {
+  app.use(cors({ origin: allowedOrigins, credentials: true }));
+} else {
+  app.use(cors({ origin: true, credentials: true }));
+}
+
+const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 
 app.use(cookieParser());
 app.use(express.json())
@@ -26,7 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("build"));
 
 const auth = require('./routes/auth');
-app.use('/login', auth);
+app.use('/login', authLimiter, auth);
 
 const favicon = require("./routes/favicon")
 app.use('/favicon.ico', favicon);
@@ -44,7 +55,7 @@ const logout = require("./routes/logout")
 app.use('/logout', logout);
 
 const addUser = require("./routes/addUser")
-app.use('/addUser', addUser);
+app.use('/addUser', authLimiter, addUser);
 
 const test = require("./routes/test")
 app.use('/test', test);

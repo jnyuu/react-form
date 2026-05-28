@@ -1,39 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const userModel = require("../models/user");
 
-let cookieExtractor = function (req) {
-    var token = null;
-    if (req && req.cookies) token = req.cookies['token'];
-    return token;
-};
-
 router.post("/", async function (req, res, next) {
-    const authToken = cookieExtractor(req)
-    let decodedLogin;
-    if (authToken) {
-        try {
-            decodedLogin = jwt.verify(authToken, process.env.JWT_SECRET)
+    if (!req.user) return res.status(401).send('Unauthorized');
 
-        } catch (e) {
-            console.log(e);
-        }
+    try {
+        await userModel.updateOne({ _id: req.user._id }, { $set: { formData: req.body } });
+        return res.status(200).send('Form Saved');
+    } catch (err) {
+        console.error(`Failed to update the item: ${err}`);
+        return res.status(500).send('Failed to save form');
     }
-
-    await userModel.updateOne({ login: decodedLogin }, { formData: req.body }).then(result => {
-        const { matchedCount, modifiedCount } = result;
-        if (matchedCount && modifiedCount) {
-            console.log(`Successfully updated the item.`)
-        }
-    })
-        .catch((err) => {
-            console.error(`Failed to update the item: ${err}`)
-        })
-
-    res.status(200)
-    res.send("Form Saved");
 });
 
 module.exports = router;

@@ -101,7 +101,8 @@ const App = () => {
     const [step14, setStep14] = useState("");
 
     useEffect(() => {
-        if (loggedIn) {
+        if (!loggedIn) return;
+        const timer = setTimeout(() => {
             axios.post('/saveForm', {
                 step1: step1,
                 step2: step2,
@@ -117,18 +118,14 @@ const App = () => {
                 step12: step12,
                 step13: step13,
                 step14: step14,
-            })
-                .then(response => {
-                    if (response.status === 200) {
-                        // console.log(response);
-                    }
-                })
-                .catch(function (error) {
-                    console.log("Error Couldn't save form");
-                    console.log(error);
-                });
-        }
-    }, [currentFormStep])
+            }).catch(function (error) {
+                console.log("Error Couldn't save form");
+                console.log(error);
+            });
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, [currentFormStep]);
 
 
     return <React.Fragment>

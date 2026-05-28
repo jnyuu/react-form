@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
     login: {
@@ -61,6 +62,26 @@ const UserSchema = new mongoose.Schema({
         step14: { type: String },
     }
 });
+
+// add index for faster lookups and uniqueness
+UserSchema.index({ login: 1 }, { unique: true });
+
+// hash password before save if modified
+UserSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next();
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        return next();
+    } catch (err) {
+        return next(err);
+    }
+});
+
+// instance method to compare password
+UserSchema.methods.comparePassword = function (candidatePassword) {
+    return bcrypt.compare(candidatePassword, this.password);
+};
 
 const User = mongoose.model("User", UserSchema);
 

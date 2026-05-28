@@ -23,6 +23,7 @@ const ReadAndSetForm = (props) => {
     } = useContext(AllContext);
 
     useEffect(() => {
+        if (sessionStorage.getItem('formLoaded') === 'true') return;
 
         axios.post('/readForm')
             .then(response => {
@@ -43,6 +44,7 @@ const ReadAndSetForm = (props) => {
                     setStep12(response.data.step12)
                     setStep13(response.data.step13)
                     setStep14(response.data.step14)
+                    sessionStorage.setItem('formLoaded', 'true');
                 }
             })
             .catch(function (error) {

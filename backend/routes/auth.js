@@ -48,18 +48,19 @@ router.post('/', function (req, res, next) {
             if (err) {
                 res.send(err);
             }
+            const payload = { userId: user._id, login: user.login };
+            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' });
 
-            const token = jwt.sign(user.login, process.env.JWT_SECRET);
+            // store token in DB (optional) - keep for single-session tracking
+            userModel.updateOne({ login: user.login }, { token: token }).catch(err => console.error(`Failed to update the item: ${err}`));
 
-            userModel.updateOne({ login: user.login }, { token: token }).then(result => {
-                const { matchedCount, modifiedCount } = result;
-                if (matchedCount && modifiedCount) {
-                    console.log(`Successfully updated the item.`)
-                }
-            })
-                .catch(err => console.error(`Failed to update the item: ${err}`))
+            const cookieOptions = {
+                httpOnly: true,
+                sameSite: 'lax'
+            };
+            if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
-            res.cookie('token', token, { httpOnly: true });
+            res.cookie('token', token, cookieOptions);
             return res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.html'))
         });
     })(req, res);
@@ -81,20 +82,18 @@ router.get('/', function (req, res, next) {
             if (err) {
                 res.send(err);
             }
+            const payload = { userId: user._id, login: user.login };
+            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' });
 
-            // generate a signed son web token with the contents of user object and return it in the response
-            //https://medium.com/front-end-weekly/learn-using-jwt-with-passport-authentication-9761539c4314
-            const token = jwt.sign(user.login, process.env.JWT_SECRET);
+            userModel.updateOne({ login: user.login }, { token: token }).catch(err => console.error(`Failed to update the item: ${err}`));
 
-            userModel.updateOne({ login: user.login }, { token: token }).then(result => {
-                const { matchedCount, modifiedCount } = result;
-                if (matchedCount && modifiedCount) {
-                    console.log(`Successfully updated the item.`)
-                }
-            })
-                .catch(err => console.error(`Failed to update the item: ${err}`))
+            const cookieOptions = {
+                httpOnly: true,
+                sameSite: 'lax'
+            };
+            if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
-            res.cookie('token', token, { httpOnly: true });
+            res.cookie('token', token, cookieOptions);
             return res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.html'))
         });
     })(req, res);
