@@ -1,6 +1,5 @@
 # React-form
-## DISCLAIMER : this whole project was build by myself - without any use of any AI software
-## DISCLAIMER : this whole project was build by myself - without any use of any AI software
+## DISCLAIMER : this whole project was built by myself - without any use of any AI software
 
 
 https://github.com/jnyuu/react-form/assets/43552134/6fd62bda-676b-49a5-a492-4869c98ad9a4
